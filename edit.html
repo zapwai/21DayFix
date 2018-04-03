@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>21 Day Fix Diet Edit</title>
+<script>
+  <!-- Called by the user when they input a date -->
+  <!-- Record either exists or is set to 000000 -->
+  function Edit()
+  {
+  <!-- Pull date from the textbox on the basic html page -->
+  var year = document.getElementById("MyForm").elements[0].value;
+  var date = document.getElementById("MyForm").elements[1].value;
+  var record;
+  <!-- Basic User-Proofing -->
+  if (date.length != 4 || (date.substr(0,2) < 0) || (date.substr(0,2) > 12) || (date.substr(2,2) < 0) || (date.substr(2,2) > 31)){ alert("Wrong Date Format!"); return; }
+      <!-- Check to make sure they're not editing today... -->
+  var d = new Date();
+  var today_date = d.getFullYear();
+  if (d.getMonth() < 10)
+  {
+     today_date += "0"+(d.getMonth()+1);
+  }
+  else today_date += (d.getMonth()+1);
+  if (d.getDate() > 9)
+  {
+     today_date += d.getDate();
+  }
+  else today_date += "0"+(d.getDate());
+      
+  if ((year+date) == today_date) {
+      alert("You cannot edit today's information here. Use the main page.");
+      return false;
+  }
+  date = year + date;
+  if (localStorage.getItem(date)){
+  record = localStorage.getItem(date);
+  }
+  else { // No Previous Record
+  record = "0,0,0,0,0,0";
+  }
+  document.write("<html>");
+  document.write("<head><title>"+date+" record edit</title>");
+  document.write("<script>");
+  <!-- Called when user clicks the Submit button. -->
+  document.write(`function SetRecord(date){ 
+  var g = document.getElementById(\"NewForm\").elements[0].value;   
+  var p = document.getElementById(\"NewForm\").elements[1].value;   
+  var r = document.getElementById(\"NewForm\").elements[2].value;   	
+  var y = document.getElementById(\"NewForm\").elements[3].value;   	
+  var b = document.getElementById(\"NewForm\").elements[4].value;   	
+  var o = document.getElementById(\"NewForm\").elements[5].value;   	
+  var new_entry = g+\",\"+p+\",\"+r+\",\"+y+\",\"+b+\",\"+o;
+  localStorage.setItem(date, new_entry);
+  alert(date+\" record set!\");}
+  `);
+  
+  document.write("<\/script>");
+  document.write("</head>");
+  document.write("<body>");
+	  
+  document.write(date.substr(4,2) + "/" + date.substr(6,2) + "/" + date.substr(0,4));
+  GenerateList(record, date);
+  }
+
+  <!-- Produce two rows, colors and text boxes. User enters numbers to the correct record. -->
+  function GenerateList(record, date)
+  {
+  var default_record = record.split(",");
+  document.write("<form action=\"#\" id=\"NewForm\"><table><tr>");
+  document.write("<td bgcolor=\"green\">&nbsp&nbsp&nbsp&nbsp</td>");  
+  document.write("<td bgcolor=\"purple\">&nbsp&nbsp&nbsp&nbsp</td>");  
+  document.write("<td bgcolor=\"red\">&nbsp&nbsp&nbsp&nbsp</td>");
+  document.write("<td bgcolor=\"yellow\">&nbsp&nbsp&nbsp&nbsp</td>");  	
+  document.write("<td bgcolor=\"blue\">&nbsp&nbsp&nbsp&nbsp</td>");
+  document.write("<td bgcolor=\"orange\">&nbsp&nbsp&nbsp&nbsp</td>");  
+  document.write("</tr><tr>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[0]+"\"></td>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[1]+"\"></td>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[2]+"\"></td>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[3]+"\"></td>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[4]+"\"></td>");
+  document.write("<td><input style=\"width:50px\" type=\"text\" value=\""+default_record[5]+"\"></td>");
+  document.write("</tr></table>");	
+
+  document.write("<input type=\"submit\" value=\"Submit\" onclick=\"SetRecord("+date+")\"></form>");
+  document.write('<a href="history.html" style="text-decoration:none">Return</a>');
+  document.write("</body></html>");
+  }
+
+</script>
+</head>
+
+<body><form id="MyForm" action="">
+  Enter Date (MMDD): <input type="text" maxlength='4' value="2018"> <input type="text" maxlength='4'>
+<input type="submit" value="Submit" onclick="Edit();">
+  </form>
+  <a href="history.html" style="text-decoration:none">Return</a>
+</body>
+</html>
+
+<!-- One neat (bad idea?) thing is that since the *second* page calls the function SetRecord, I put its definition inside of document.write() calls. This fixes the scope issue.-->
