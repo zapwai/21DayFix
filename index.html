@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!-- This page uses local web storage into variables with name date (date is YYYYMMDD)
+list: current list, initialized to your prescribed servings of g, p, r, etc. and
+YYYYMMDD: For data purposes, A six digit number that indicates amount of g,p,r,y,b,o that were checked on that date.
+You can click one of the colored boxes to add to the array if you ate more than the correct amount of servings in a day.
+Variable should be stored when visiting the page on a new day. -->
+
+<html>
+  <head>
+    <style>
+      input[type=checkbox] {
+      transform: scale(1.5);
+      }
+    </style>
+    <title>21 Day Fix Diet</title>
+    <script type="text/javascript">
+      var d = new Date();
+      document.write(d.toDateString() + " | ");
+      document.write(' <a href="history.html" style="text-decoration:none">View History</a>');
+
+      var dayname = d.getFullYear();
+      if (d.getMonth() < 10)
+	{
+         dayname += "0"+(d.getMonth()+1);
+        }
+      else dayname += (d.getMonth()+1);
+
+      if (d.getDate() > 9)
+	{
+	dayname += d.getDate();
+	}
+      else dayname += "0"+(d.getDate());
+
+	var MyList = ["g1", "g2", "g3", "g4", "p1", "p2", "p3", "r1", "r2", "r3", "r4", "y1", "y2", "y3", "b1", "o1"];
+
+
+	function InitDayname()
+	<!-- Used to record checkbox status for current day. -->
+	<!-- If dayname does not yet exist as a key, we remove 'list' and create dayname.  -->
+	{
+	if (!localStorage.getItem(dayname))
+	{
+	localStorage.removeItem("list");
+	ClearBoxes();
+	}
+	}
+
+
+      function SetList()
+      {	<!-- If list is not yet stored, create it. -->
+       if (!localStorage.getItem("list"))
+       {
+       localStorage.setItem("list", MyList);
+       }
+      }
+
+      function GetList()
+      { <!-- Grab list, store as a global array. -->
+      MyList = localStorage.getItem("list").split(",");
+      }
+
+	InitDayname();
+	SetList();
+	GetList();
+
+
+	function AddColor(color)
+	{ <!-- push a color to the end of that colors subset -->
+<!-- This is called when you click on the colors at the bottom of the page. -->
+
+	var newcolor = color.substr(0,1);
+	var i; <!-- Find length of that color in MyList. -->
+	var index=0; <!-- Set index to length plus one -->
+	for (i=0; i < MyList.length; i++)
+		      {	<!-- order is g,p,r,y,b,o -->
+		      switch(newcolor)
+		      {
+		      case "g":
+		      if (MyList[i].includes('g'))
+		      {
+		      index++;
+		      }
+		      break;
+		      case "p":
+		      if (MyList[i].includes('p'))
+		      {
+		      index++;
+		      }
+		      break;
+		      case "r":
+		      if (MyList[i].includes('r'))
+		      {
+		      index++;
+		      }
+		      break;
+		      case "y":
+		      if (MyList[i].includes('y'))
+		      {
+		      index++;
+		      }
+		      break;
+		      case "b":
+		      if (MyList[i].includes('b'))
+		      {
+		      index++;
+		      }
+		      break;
+		      case "o":
+		      if (MyList[i].includes('o'))
+		      {
+		      index++;
+		      }
+		      break;			    
+		      }
+		      }
+        var location = MyList.indexOf(newcolor+index);    
+        newcolor += (index+1);
+	MyList.splice(location+1,0,newcolor);
+	localStorage.setItem("list", MyList);	
+		      }
+
+// These are for debugging purposes.		      
+//      document.write(MyList);
+      function Reset()
+	      {
+	      localStorage.clear();
+	      }
+
+//Reset();
+
+      function ListVars()
+       {
+	var i;
+	document.write("<br>");
+	for (i=0; i < localStorage.length; i++)
+	 {
+          document.write(localStorage.key(i)+": "+localStorage.getItem(localStorage.key(i))+"<br>");
+	 }
+       }
+
+//ListVars();
+
+      function ClearBoxes()
+      {
+      for (i = 0; i < MyList.length; i++)
+		      {
+		      var selCheck = document.getElementById(MyList[i]);
+		      selCheck.checked = false;
+		      localStorage.setItem(MyList[i], selCheck.checked);
+		      localStorage.setItem(dayname, "0,0,0,0,0,0");
+		      }
+      }
+
+      function LoadMe(){
+      var i;
+      for (i = 0; i < MyList.length; i++)
+		      {		      
+		      var selCheck = document.getElementById(MyList[i]);
+		      selCheck.checked = (localStorage.getItem(MyList[i])=="true");
+		      }
+		      }
+
+
+      <!-- SetMe runs when a checkbox is clicked. -->
+      function SetMe(name){
+      <!-- These two lines set a unique checkbox status to save state. -->
+      var selCheck = document.getElementById(name);
+      localStorage.setItem(name, selCheck.checked);
+
+      <!-- Adjust dayname record, add to # for this color. -->
+      var color = name.substr(0,1);
+      var current_colors = localStorage.getItem(dayname).split(",");
+      <!-- six digits, gprybo-->
+      if (selCheck.checked){
+      switch(color){
+      case 'g':
+      current_colors[0]++;
+      break;
+      case 'p':
+      current_colors[1]++;
+      break;
+      case 'r':
+      current_colors[2]++;
+      break;
+      case 'y':
+      current_colors[3]++;
+      break;
+      case 'b':
+      current_colors[4]++;
+      break;
+      case 'o':
+      current_colors[5]++;
+      break;
+      }}
+      else if (!selCheck.checked){
+      switch(color){
+      case 'g':
+      current_colors[0]--;
+      break;
+      case 'p':
+      current_colors[1]--;
+      break;
+      case 'r':
+      current_colors[2]--;
+      break;
+      case 'y':
+      current_colors[3]--;
+      break;
+      case 'b':
+      current_colors[4]--;
+      break;
+      case 'o':
+      current_colors[5]--;
+      break;
+      }}
+      localStorage.setItem(dayname, current_colors);
+      }
+		      
+
+      function PrintList(){
+        document.write('<form action=""><table>');
+        document.write('<tr>');
+        var i;
+	for (i=0; i < MyList.length; i++)
+        {
+	 document.write('<td bgcolor="');
+	 var color=MyList[i].substr(0,1);
+					switch (color)
+					{
+					case "g": 
+					document.write("green");
+					break;
+					
+					case "p":
+					document.write("purple");
+					break;
+
+					case "r":
+					document.write("red");
+					break;
+
+					case "y":
+					document.write("yellow");
+					break;
+
+					case "b":
+					document.write("blue");
+					break;
+
+					case "o":
+					document.write("orange");
+					break;
+					}
+	 document.write('">&nbsp;&nbsp;&nbsp;&nbsp;</td>');
+        }
+     document.write('</tr>');
+     document.write('<tr>');	  	  		      
+     for (i=0; i < MyList.length; i++)
+     {
+         document.write('<td><input type="checkbox" id=\"');
+         document.write(MyList[i]);
+         document.write('\" onclick="SetMe(\''+MyList[i]+'\');">');
+	 document.write('</td>');
+     }		      
+	      document.write('</tr></table>');
+	      document.write('<br><br><br>');		      
+	      document.write('<input type="button" onclick="ClearBoxes();" value="Clear All"></form>');
+     }
+		      
+</script>
+  </head>
+  <body>
+    <script>
+      PrintList();
+      LoadMe();
+    </script>
+    <hr>
+    Click one of these colored boxes to add another portion for today.<br>
+    (You will have to refresh or reload the page to see the new boxes.)
+    <table>
+      <tr><td bgcolor="green"><span onclick="AddColor('green')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Veggies - 1 cup</td></tr>
+      <tr><td bgcolor="purple"><span onclick="AddColor('purple')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Fruits - 1 cup</td></tr>
+      <tr><td bgcolor="red"><span onclick="AddColor('red')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Protein - 3/4 cup (Meat, 2 eggs, yogurt, cottage cheese)</td></tr>
+      <tr><td bgcolor="yellow"><span onclick="AddColor('yellow')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Carbs - 1/2 cup (1 slice bread, 2 small tortilla, beans, rice, peas, oatmeal)</td></tr>
+      <tr><td bgcolor="blue"><span onclick="AddColor('blue')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Healthy Fats - 1/3 cup (Avocado, Nuts, Hummus, Cheese)</td></tr>
+      <tr><td bgcolor="orange"><span onclick="AddColor('orange')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Seeds, Nuts, Dressing - 2 Tbsp</td></tr>      
+    </table>
+
+  </body>
+</html>
+
+<!-- This is my 1600 calorie version. -->
+<!-- T gets 3g, 2p, 2y; (1200 calories) MyList is changed for that. -->

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- This page displays previous days totals based on the variables stored in localStorage.
+     localStorage contains keys titled YYYYMMDD
+     We run a nested for loop and print colored squares in the order gprybo.
+  -->
+<html>
+  <head>
+    <!-- <style> -->
+    <!--   input[type=checkbox] { -->
+    <!--   transform: scale(1.5); -->
+    <!--   } -->
+    <!-- </style> -->
+    <title>21 Day Fix Diet History</title>
+    <script type="text/javascript">
+      function Bars(record)
+      <!-- Prints the actual columns of colors. -->
+      {
+      var nums = record.split(",");
+      var i;
+
+      for (i=0;i < 6;i++)
+		   {
+		   var n;
+		   for (n = 0; n < nums[i]; n++){		   
+				   switch(i)
+				   {
+				   case 0:
+				   document.write("<td bgcolor=\"green\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   
+				   break;
+
+				   case 1:
+				   document.write("<td bgcolor=\"purple\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   break;
+
+				   case 2:
+				   document.write("<td bgcolor=\"red\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   break;
+
+				   case 3:
+				   document.write("<td bgcolor=\"yellow\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   break;
+
+				   case 4:
+				   document.write("<td bgcolor=\"blue\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   break;
+
+				   case 5:
+				   document.write("<td bgcolor=\"orange\">&nbsp&nbsp&nbsp&nbsp</td>");
+				   break;
+				   }
+				   }
+				   }
+				   document.write("</tr></table>");		   
+				   }
+
+				   function PrintHistory()
+				   <!-- Pulls record for each date form localStorage -->
+				   {
+				   var M;
+				   var D;
+				   var Y = "2018";
+				   var datem;
+				   var datemd;
+				   for (M=1; M < 13; M++){
+						 if (M < 10)
+							 {
+							 datem = Y + ("0"+M);
+							 }
+							 else
+							 {
+							 datem = Y + M;
+							 }
+							 for (D=1; D < 5; D++){
+								       if (D < 10)
+									       {
+									       datemd = datem + ("0"+D);
+									       }
+									       else
+									       {
+									       datemd = datem + D;
+									       }
+									       var record = localStorage.getItem(datemd);
+									       if (record){
+									       document.write("<table><tr><td>"+M+"/"+D+"</td>");		
+									       Bars(record);
+									       }
+									       }
+									       }
+									       }
+									       </script>
+</head>
+<body>
+  <a href="index.html" style="text-decoration:none">Today</a>
+  <script>
+    PrintHistory();
+  </script>
+  <br>
+  (No editing function yet, sorry. And the data is sideways.)
+</body>
+</html>
+
