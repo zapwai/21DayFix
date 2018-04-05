@@ -7,12 +7,36 @@
       height:300px;
       }
     </style>
-</head>
+    <script language="javascript">
+      function myImport()
+      {
+      var data = document.getElementById("MyBox").value;
+      var lines = data.split("\n"); <!-- lines[0] is the first row of data, etc. -->
+      if (lines[0].substr(0,1) != "2") { lines.shift(); } <!-- Ignore the first line, may contain a header -->
+      if (lines[0].substr(0,1) != "2") { alert("Format is wrong!"); return false; }
+      if (lines[lines.length-1].substr(0,1) != "2") { lines.pop(); } <!-- Ignore trailing (blank) weird new line -->
+      var dates = [];
+      var records = [];
+      var array;
+      for (var i=0; i < lines.length; i++){
+      array = lines[i].split(":");
+      dates.unshift(array[0]);
+      records.unshift(array[1]);
+      }
+	for (var i=0; i < dates.length; i++){
+	  localStorage.setItem(dates[i], records[i]);
+	  }
+      alert("Records Added!");
+      }
+
+    </script>
+  </head>
   <body>
     <a href="history.html" style="text-decoration:none">Back</a><br>
-Copy and paste previous days records.<br>YYYYMMDD: g,p,r,y,b,o<br>
-<textarea cols="24"></textarea><br>
-<input type="submit" value="Submit" onclick="alert('! Sorry, this feature is not ready yet.')">
-
-</body>
+    Copy and paste previous records.<br>YYYYMMDD: g,p,r,y,b,o<br>
+    <form action="">
+      <textarea cols="24" id="MyBox"></textarea><br>
+      <input type="submit" value="Submit" onclick="myImport()">
+    </form>
+  </body>
 </html>
