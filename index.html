@@ -9,7 +9,11 @@ Variable should be stored when visiting the page on a new day. -->
   <head>
     <style>
       input[type=checkbox] {
-      transform: scale(1.5);
+      transform: scale(2);
+      }
+
+      body{
+      font-size:220%
       }
     </style>
     <title>21 Day Fix Diet</title>
@@ -257,7 +261,7 @@ Variable should be stored when visiting the page on a new day. -->
      document.write('<tr>');	  	  		      
      for (i=0; i < MyList.length; i++)
      {
-         document.write('<td><input type="checkbox" id=\"');
+         document.write('<td align="center"><input type="checkbox" id=\"');
          document.write(MyList[i]);
          document.write('\" onclick="SetMe(\''+MyList[i]+'\');">');
 	 document.write('</td>');
@@ -277,8 +281,8 @@ Variable should be stored when visiting the page on a new day. -->
       LoadMe();
     </script>
     <hr>
-    Click one of these colored boxes to add another portion for today.<br>
-    (You will have to refresh or reload the page to see the new boxes.)
+    Click the boxes below to add an extra portion for today.<br>
+    (You will have to refresh the page to see the new boxes.)
     <table>
       <tr><td bgcolor="green"><span onclick="AddColor('green')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Veggies - 1 cup</td></tr>
       <tr><td bgcolor="purple"><span onclick="AddColor('purple')">&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>Fruits - 1 cup</td></tr>
