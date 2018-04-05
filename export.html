@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<title>Export History</title>
+</head>
+<body>
+<tt>Date: g,p,r,y,b,o<br></tt>
+<script language="javascript">
+var date;
+var record;
+<!-- For each date in localStorage, print the date and the values of green, purple, etc. -->
+var i;
+for (var key in localStorage){
+ if (key.length == 8){ <!-- Dates are basically the only stored info with key of length 8. -->
+  if (key.substr(0,2) == "20"){
+   document.write('<tt>'+key+': '+localStorage.getItem(key)+'</tt><br>');
+  }
+ }
+}
+</script>
+</body>
+</html>
