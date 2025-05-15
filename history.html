@@ -57,9 +57,10 @@
 				   function PrintHistory()
 				   <!-- Pulls record for each date form localStorage -->
 				   {
+				   const currentYear = new Date().getFullYear();
 				   var M;
 				   var D;
-				   var Y = "2018";
+				   var Y = currentYear;
 				   var datem;
 				   var datemd;
 				   for (M=1; M < 13; M++){
